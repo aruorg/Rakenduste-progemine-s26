@@ -251,7 +251,7 @@ const sayHiExplicit = name => {
     return `Hello, ${name}!`;
 };
 
-// Callback function example
+// Callback func example
 function calculate(number, callback) {
     return callback(number);
 }
@@ -265,14 +265,14 @@ const numbers = [1, 2, 3, 4, 5];
 numbers.forEach(number => 
     console.log(number * 2));
 
-console.log('10. Array Methods: map, filter, and find');
+console.log('11. Array Methods: map, filter, and find');
 
 const mapArray = [1, 2, 3, 4, 5];
 
 const sqrdNums = mapArray.map(number => number ** 2);
 console.log(sqrdNums); // [1, 4, 9, 16, 25] 
 
-const filterArray = ['butterfly', 'cat', 'dog',
+const animalArray = ['butterfly', 'cat', 'dog',
      'elephant', 'fox', 'giraffe', 'horse', 
      'iguana', 'jaguar', 'kangaroo', 'lion', 
      'monkey', 'newt', 'octopus', 'penguin', 
@@ -280,7 +280,7 @@ const filterArray = ['butterfly', 'cat', 'dog',
      'urchin', 'vulture', 'wolf', 'xenops', 
      'yak', 'zebra'];
 
-const filteredAnimals = filterArray.filter(animal => animal.length < 5);
+const filteredAnimals = animalArray.filter(animal => animal.length < 5);
 console.log(filteredAnimals); // ['cat', 'dog', 'fox', 'lion', 'newt', 'quail', 'wolf', 'yak']
 
 const findArray = [105, 260, 343, 4358, 5358, 598, 40, 254, 99];
@@ -354,3 +354,55 @@ import CUAgain from './task_1-1.js';
 console.log(bye('Anna'));
 console.log(sub(140));
 console.log(CUAgain('Moth'));
+
+
+console.log('14. Asynchronous JavaScript: Promises and async/await');
+
+// A promise gives a result
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => resolve('Data received!'), 1000);
+});
+
+// Pending promise
+console.log(promise);
+
+// async + await
+async function getData() {
+  const result = await promise;
+  console.log(result);
+}
+
+getData();
+
+const rejectedPromise = new Promise((resolve, reject) => {
+  reject('Something went wrong!');
+});
+
+rejectedPromise.catch(error => {
+  console.log('Error:', error);
+});
+
+
+console.log('15. Fetching Data, JSON, and Error Handling');
+
+async function getUser() {
+  try {
+    const response = await fetch(
+      'https://dummyjson.com/users/1'
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+
+    const user = await response.json();
+
+    console.log(`Name: ${user.firstName} ${user.lastName}`);
+    console.log(`Age: ${user.age}`);
+    console.log(`Email: ${user.email}`);
+  } catch (error) {
+    console.log('Error:', error.message);
+  }
+}
+
+getUser();
