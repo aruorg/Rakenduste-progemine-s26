@@ -1,0 +1,36 @@
+.task-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-bg);
+    border: 2px dashed black;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 10px;
+    max-width: 200px;
+}
+
+.task-card h2 {
+    margin-top: 5px;
+}
+
+.task-card p {
+    margin-top: 5px;
+    color: var(--accent);
+}
+
+#task-state {
+    color: rgb(235, 208, 255);
+    font-weight: 600;
+
+}
+
+button{
+    margin: 5px;
+    padding: 5px;
+    color: whitesmoke;
+    background-color: rgb(136, 15, 248);
+    border: 2px solid #ce7eff;
+    border-radius: 6px;
+}
