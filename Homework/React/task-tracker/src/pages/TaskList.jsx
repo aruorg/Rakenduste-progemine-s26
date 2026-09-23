@@ -10,14 +10,17 @@ function TaskList({
   setShowForm,
   addTask,
 }) {
-  return (
-    <main>
-        <button onClick={() => setShowForm(true)}>
-            Add Task
-        </button>
-      <h1>Tasks</h1>
+   return (
+    <main className="task-list-page">
+      <div className="task-list-header">
+        <h1>Tasks</h1>
 
-      <div>
+        <button onClick={() => setShowForm(true)}>
+          Add Task
+        </button>
+      </div>
+
+      <div className="task-filters">
         <button onClick={() => setFilter("all")}>All</button>
 
         <button onClick={() => setFilter("completed")}>
@@ -30,12 +33,10 @@ function TaskList({
       </div>
 
       {showForm && (
-        <TaskForm
-          addTask={addTask}
-        />
+        <TaskForm addTask={addTask} />
       )}
 
-      <div>
+      <div className="task-grid">
         {tasks.length === 0 ? (
           <p>No tasks found</p>
         ) : (

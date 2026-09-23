@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getTasks } from './services/taskApi';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
@@ -7,38 +8,51 @@ import TaskList from './pages/TaskList';
 import TaskDetails from './pages/TaskDetails';
 import NotFound from './pages/NotFound';
 import Header from './components/Header';
+import PageSection from './components/PageSection';
 
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState('all');
 
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: 'Do homework',
-      description: 'Math, Biology notes',
-      completed: true,
-    },
-    {
-      id: 2,
-      title: 'Clean home',
-      description: 'Deep clean kitchen',
-      completed: false,
-    },
+  const [tasks, setTasks] = useState([]);
 
-    {
-      id: 3,
-      title: 'Groceries',
-      description: 'Order groceries',
-      completed: false,
-    },
-    {
-      id: 4,
-      title: 'Make reservation',
-      description: "Make reservation for friend's bday",
-      completed: true,
-    },
-  ]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadTasks() {
+      try {
+        const data = await getTasks();
+
+        if (!ignore) {
+          setTasks(data);
+        }
+      } catch (error) {
+        if (!ignore) {
+          setError(error.message);
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadTasks();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  if (loading) {
+    return <p>Loading tasks</p>;
+  }
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   let filteredTasks = tasks;
 
@@ -74,32 +88,29 @@ function App() {
   }
 
   return (
-    <> 
-    <Header/>
+    <>
+      <Header />
       <Routes>
-        <Route path="/"
-         element={<Home tasks={tasks} />} 
-         />
-        <Route path="/tasks"
+        <Route path="/" element={<Home tasks={tasks} />} />
+        <Route
+          path="/tasks"
           element={
-          <TaskList
-          tasks={filteredTasks}
-          setFilter={setFilter}
-          onToggle={toggleTask}
-          onDelete={deleteTask}
-          showForm={showForm}
-          setShowForm={setShowForm}
-          addTask={handleAddTask}/>} 
-          />
-        <Route path="/tasks/:taskId"
-         element={<TaskDetails tasks={tasks} />} 
-         />
+            <PageSection title="My tasks">
+              <TaskList
+                tasks={filteredTasks}
+                setFilter={setFilter}
+                onToggle={toggleTask}
+                onDelete={deleteTask}
+                showForm={showForm}
+                setShowForm={setShowForm}
+                addTask={handleAddTask}
+              />
+            </PageSection>
+          }
+        />
+        <Route path="/tasks/:taskId" element={<TaskDetails tasks={tasks} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-
-     
-
-      
     </>
   );
 }

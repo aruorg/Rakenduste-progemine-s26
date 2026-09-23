@@ -1,10 +1,11 @@
+import PageSection from "../components/PageSection";
 
 function Home({ tasks }) {
   const incompleteTasks = tasks.filter((task) => !task.completed);
 
   return (
     <main>
-      <h1>Incomplete Tasks</h1>
+      <PageSection title="My tasks">
 
       {incompleteTasks.length === 0 ? (
         <p>No incomplete tasks</p>
@@ -15,6 +16,7 @@ function Home({ tasks }) {
           ))}
         </ul>
       )}
+      </PageSection>
     </main>
   );
 }
